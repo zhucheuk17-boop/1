@@ -39,6 +39,12 @@ jobs:
         with:
           name: github-pages
           path: ./dist
+      - name: Extract site artifact
+        run: |
+          if [ -f ./dist/artifact.tar ]; then
+            tar -xf ./dist/artifact.tar -C ./dist || true
+            rm -f ./dist/artifact.tar
+          fi
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
