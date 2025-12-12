@@ -1,0 +1,29 @@
+name: Enable GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  enable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable Pages via API
+        run: |
+          echo "Enabling Pages for $GITHUB_REPOSITORY on gh-pages branch..."
+          status=$(curl -s -o /dev/null -w "%{http_code}" -X PUT \
+            -H "Authorization: token ${{ secrets.ADMIN_GH_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -d '{"source":{"branch":"gh-pages","path":"/"}}' \
+            "https://api.github.com/repos/${{ github.repository }}/pages" || true)
+          echo "GitHub API responded status code: $status"
+          if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
+            echo "Pages enabled successfully."
+            exit 0
+          else
+            echo "Failed to enable Pages. (HTTP $status)"
+            exit 1
+          fi
