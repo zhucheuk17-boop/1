@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Rose Competition | Garden Club</title>
+    
+    <!-- Fonts: Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-green: #34d399; /* Soft fresh green */
+            --dark-green: #059669;
+            --soft-pink: #fce7f3; /* Background highlights */
+            --rose-pink: #fb7185; /* Accent color */
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-white: #ffffff;
+            --bg-off-white: #f8fafc;
+            
+            --radius: 16px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-off-white);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .text-center { text-align: center; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--rose-pink);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #f43f5e;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(251, 113, 133, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-dark);
+            border: 1px solid #e2e8f0;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--rose-pink);
+            color: var(--rose-pink);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-green);
+        }
+        
+        .logo i { color: var(--rose-pink); margin-right: 8px; }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .nav-links a:hover {
+            color: var(--rose-pink);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding-top: 160px;
+            padding-bottom: 100px;
+            background: linear-gradient(135deg, #fff0f3 0%, #ecfdf5 100%);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--rose-pink);
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            color: var(--text-light);
+        }
+
+        /* --- ABOUT --- */
+        #about { background: var(--bg-white); }
+        
+        .section-title {
+            font-size: 2.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* --- TIMELINE --- */
+        #timeline { background: var(--bg-off-white); }
+
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 50px;
+            position: relative;
+        }
+
+        /* Connecting line for desktop */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 0;
+            display: block;
+        }
+
+        .step-card {
+            background: var(--bg-white);
+            width: 18%;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: var(--shadow);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px auto;
+            border: 4px solid var(--bg-white);
+        }
+
+        .step-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* --- SCORING --- */
+        #scoring { background: var(--bg-white); }
+
+        .scoring-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .score-visual {
+            background: var(--soft-pink);
+            padding: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bar-container {
+            display: flex;
+            width: 100%;
+            height: 60px;
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 30px 0;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .bar-public {
+            width: 40%;
+            background: var(--rose-pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bar-judges {
+            width: 60%;
+            background: var(--primary-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .prizes-box ul {
+            margin-top: 20px;
+        }
+        
+        .prizes-box li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+        }
+
+        .prizes-box i {
+            color: #eab308; /* Gold color */
+            margin-right: 12px;
+        }
+
+        /* --- GALLERY --- */
+        #gallery { background: var(--bg-off-white); }
+
+        .filter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--dark-green);
+            color: white;
+            border-color: var(--dark-green);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .rose-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .rose-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .rose-img-wrapper {
+            height: 200px;
+            background-color: #e2e8f0;
+            position: relative;
+        }
+
+        .rose-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-seedling { background: #dbeafe; color: #1e40af; }
+        .status-growing { background: #dcfce7; color: #166534; }
+        .status-budding { background: #fef9c3; color: #854d0e; }
+        .status-blooming { background: #fee2e2; color: #991b1b; }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-body h4 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .card-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .update-date {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .card-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: var(--text-dark);
+            font-weight: 500;
+            margin-top: 15px;
+            transition: var(--transition);
+        }
+        
+        .card-btn:hover {
+            background: #f1f5f9;
+        }
+
+        /* --- VOTING --- */
+        #voting {
+            background: var(--dark-green);
+            color: white;
+            text-align: center;
+        }
+        
+        #voting h2 { color: white; }
+        #voting p { color: #d1fae5; margin-bottom: 30px; }
+        
+        .btn-vote {
+            background: white;
+            color: var(--dark-green);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-vote:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        /* --- TIPS --- */
+        #tips { background: var(--bg-white); }
+
+        .tips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .tip-card {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 25px;
+            border-radius: var(--radius);
+            flex: 1 1 300px;
+            max-width: 350px;
+        }
+
+        .tip-card h4 {
+            color: var(--dark-green);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tip-card h4 i { margin-right: 10px; }
+
+        /* --- FAQ --- */
+        #faq { background: var(--bg-off-white); }
+        
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+
+        .faq-item {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .faq-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--rose-pink);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 60px 0 30px 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .footer-links a:hover { color: white; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.5rem; }
+            
+            .timeline-container::before { display: none; }
+            
+            .timeline-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step-card {
+                width: 100%;
+                max-width: 500px;
+                margin-bottom: 30px;
+            }
+            
+            .scoring-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Hidden by default on mobile */
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.05);
+            }
+            
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            
+            .hero { padding-top: 120px; }
+            .hero-btns { display: flex; flex-direction: column; gap: 15px; }
+            .btn-secondary { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-container">
+            <a href="#" class="logo"><i class="fas fa-seedling"></i> Garden Club</a>
+            <div class="mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about" onclick="toggleMenu()">About</a></li>
+                <li><a href="#timeline" onclick="toggleMenu()">How It Works</a></li>
+                <li><a href="#scoring" onclick="toggleMenu()">Prizes</a></li>
+                <li><a href="#gallery" onclick="toggleMenu()">Gallery</a></li>
+                <li><a href="#faq" onclick="toggleMenu()">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+    <header id="hero" class="hero">
+        <div class="container">
+            <h1>Campus <span>Rose</span> Competition</h1>
+            <p class="subtitle">Grow, share, and celebrate your roses with our school Garden Club.</p>
+            <p>
+                Join the challenge! Students receive free seeds and soil to grow their own rose at home. 
+                Document your journey and bring your blooming masterpiece back to school for the grand exhibition.
+            </p>
+            <div class="hero-btns">
+                <a href="#timeline" class="btn btn-primary">Join the Competition</a>
+                <a href="#gallery" class="btn btn-secondary">View Roses</a>
+            </div>
+        </div>
+    </header>
+    <section id="about" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">What is the Campus Rose Competition?</h2>
+            <div class="about-content">
+                <p>
+                    This is a semester-long project designed to bring nature into our daily lives. 
+                    Every participant receives a <strong>free starter kit</strong> containing high-quality rose seeds and nutrient-rich soil.
+                </p>
+                <br>
+                <p>
+                    Over the next few months, you'll nurture your plant, track its growth on this website, 
+                    and finally showcase your work. It doesn't matter if you're a gardening pro or a complete beginner—it's all about the journey!
+                </p>
+            </div>
+        </div>
+    </section>
+    <section id="timeline" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="timeline-container">
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                    <h3>1. Sign Up</h3>
+                    <p>Register online and pick up your free rose kit from the Biology Lab.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-water"></i></div>
+                    <h3>2. Plant & Care</h3>
+                    <p>Follow our guide to plant your seeds and water them regularly.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-camera"></i></div>
+                    <h3>3. Upload Photos</h3>
+                    <p>Log in to update your progress and share photos of your plant's growth.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-box-open"></i></div>
+                    <h3>4. Final Show</h3>
+                    <p>Bring your potted rose to the school gym for the exhibition day.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i class="fas fa-trophy"></i></div>
+                    <h3>5. Vote & Win</h3>
+                    <p>Public voting and judge scoring determine the winners!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="scoring" class="section-padding">
+        <div class="container">
+            <div class="scoring-grid">
+                <div class="score-visual">
+                    <h2>How Voting Works</h2>
+                    <p class="text-center" style="margin-top:10px;">Your final score is a combination of community support and expert review.</p>
+                    <div class="bar-container">
+                        <div class="bar-public">40% Public</div>
+                        <div class="bar-judges">60% Judges</div>
+                    </div>
+                    <div style="width: 100%;">
+                        <h3>Judging Criteria:</h3>
+                        <ul style="margin-top:15px; list-style: disc; padding-left: 20px; color: var(--text-dark);">
+                            <li>Flower health and petal color vividness</li>
+                            <li>Overall shape and fullness of foliage</li>
+                            <li>Consistency of care (based on your online log)</li>
+                            <li>Final presentation on exhibition day</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="prizes-box">
+                    <h2>Prizes & Awards</h2>
+                    <p style="margin-bottom:20px;">We have amazing rewards for the top gardeners!</p>
+                    <ul>
+                        <li>
+                            <i class="fas fa-medal fa-2x"></i>
+                            <div>
+                                <strong>1st Place</strong><br>
+                                $100 Gift Card + "Master Gardener" Certificate
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-medal fa-2x" style="color: silver;"></i>
+                            <div>
+                                <strong>2nd Place</strong><br>
+                                $50 Gift Card + Certificate
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-medal fa-2x" style="color: #cd7f32;"></i>
+                            <div>
+                                <strong>3rd Place</strong><br>
+                                Garden Tool Set + Certificate
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="margin-top: 30px; background: #f1f5f9; padding: 20px; border-radius: 12px;">
+                        <strong>Special Awards:</strong>
+                        <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                            <span style="background: white; padding: 5px 10px; border-radius: 4px; border: 1px solid #ddd;">🎨 Most Creative</span>
+                            <span style="background: white; padding: 5px 10px; border-radius: 4px; border: 1px solid #ddd;">🌿 Healthiest Growth</span>
+                            <span style="background: white; padding: 5px 10px; border-radius: 4px; border: 1px solid #ddd;">📝 Best Growth Log</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="gallery" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Live Rose Gallery</h2>
+            <p class="text-center" style="margin-bottom: 30px; color: var(--text-light);">
+                Check out the progress of our student participants!
+            </p>
+            <div class="filter-controls">
+                <button class="filter-btn active" onclick="filterRoses('all')">All Roses</button>
+                <button class="filter-btn" onclick="filterRoses('Seedling')">Seedling</button>
+                <button class="filter-btn" onclick="filterRoses('Growing')">Growing</button>
+                <button class="filter-btn" onclick="filterRoses('Blooming')">Blooming</button>
+            </div>
+            <div id="rose-grid" class="gallery-grid">
+            </div>
+        </div>
+    </section>
+    <section id="voting" class="section-padding">
+        <div class="container">
+            <h2>Ready to Vote?</h2>
+            <p>Voting will open during the final exhibition period in May.</p>
+            <button class="btn-vote" disabled style="opacity: 0.8; cursor: not-allowed;">Vote Coming Soon</button>
+        </div>
+    </section>
+    <section id="tips" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Gardener's Care Guide</h2>
+            <div class="tips-container">
+                <div class="tip-card">
+                    <h4><i class="fas fa-sun"></i> Sunlight</h4>
+                    <p>Roses love the sun! Ensure your pot gets at least 6 hours of direct sunlight every day. A south-facing window is best.</p>
+                </div>
+                <div class="tip-card">
+                    <h4><i class="fas fa-tint"></i> Watering</h4>
+                    <p>Keep the soil moist but not soggy. Water when the top inch of soil feels dry. Avoid getting water on the leaves to prevent fungus.</p>
+                </div>
+                <div class="tip-card">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Troubleshooting</h4>
+                    <p>Yellow leaves? You might be overwatering. Drooping? It needs more water. Visit the club room if you need help!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="faq" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h4>Who can join the competition?</h4>
+                    <p>Any student currently enrolled in Grades 8-12 at our high school. Teachers are welcome to grow for fun, but cannot win prizes.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Does it cost money?</h4>
+                    <p>No! It is completely free. The Garden Club provides the seeds, soil, and basic starter pots thanks to our school funding.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>What if my rose doesn't bloom in time?</h4>
+                    <p>That's okay! Bring it anyway. You can still win the "Healthiest Growth" or "Best Log" awards. Nature is unpredictable.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Can I work in a team?</h4>
+                    <p>Yes, teams of up to 2 students are allowed to share one plant entry.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How do I upload photos?</h4>
+                    <p>Once you register, you will get a login link sent to your student email. You can upload photos directly from your phone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Campus Garden Club</div>
+            <p>Vancouver High School • Vancouver, BC</p>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
+            </div>
+            <p style="font-size: 0.8rem; opacity: 0.6;">&copy; 2025 Campus Garden Club. All rights reserved.</p>
+            <p style="font-size: 0.8rem; opacity: 0.6;">Contact: gardenclub@school-email.ca</p>
+        </div>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+        const rosesData = [
+            { id: 1, student: "Sarah J.", grade: "Grade 11", nickname: "Rosie", status: "Blooming", date: "2 days ago", image: "https://placehold.co/400x300/fb7185/ffffff?text=Rosie" },
+            { id: 2, student: "Mike T.", grade: "Grade 10", nickname: "The Green Giant", status: "Growing", date: "5 hours ago", image: "https://placehold.co/400x300/34d399/ffffff?text=Green+Giant" },
+            { id: 3, student: "Emily & Sam", grade: "Grade 12", nickname: "Sunshine", status: "Budding", date: "1 week ago", image: "https://placehold.co/400x300/fef9c3/854d0e?text=Sunshine" },
+            { id: 4, student: "Alex W.", grade: "Grade 9", nickname: "Sprout", status: "Seedling", date: "Yesterday", image: "https://placehold.co/400x300/dbeafe/1e40af?text=Sprout" },
+            { id: 5, student: "Jessica L.", grade: "Grade 11", nickname: "Queen Red", status: "Blooming", date: "Today", image: "https://placehold.co/400x300/991b1b/ffffff?text=Queen+Red" },
+            { id: 6, student: "David K.", grade: "Grade 10", nickname: "Rocky", status: "Growing", date: "3 days ago", image: "https://placehold.co/400x300/10b981/ffffff?text=Rocky" }
+        ];
+        const galleryContainer = document.getElementById('rose-grid');
+        function renderGallery(filter = 'all') {
+            galleryContainer.innerHTML = '';
+            const filteredData = filter === 'all' ? rosesData : rosesData.filter(rose => rose.status === filter);
+            if (filteredData.length === 0) {
+                galleryContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No roses found in this category yet!</p>';
+                return;
+            }
+            filteredData.forEach(rose => {
+                let badgeClass = '';
+                switch(rose.status) { case 'Seedling': badgeClass = 'status-seedling'; break; case 'Growing': badgeClass = 'status-growing'; break; case 'Budding': badgeClass = 'status-budding'; break; case 'Blooming': badgeClass = 'status-blooming'; break; default: badgeClass = 'status-growing'; }
+                const cardHTML = `
+                    <div class="rose-card">
+                        <div class="rose-img-wrapper">
+                            <span class="status-badge ${badgeClass}">${rose.status}</span>
+                            <img src="${rose.image}" alt="${rose.nickname}">
+                        </div>
+                        <div class="card-body">
+                            <h4>${rose.nickname}</h4>
+                            <div class="card-meta">
+                                <span><i class="fas fa-user"></i> ${rose.student} (${rose.grade})</span>
+                            </div>
+                            <div class="update-date">
+                                <i class="far fa-clock"></i> Updated: ${rose.date}
+                            </div>
+                            <a href="#" class="card-btn">View Growth Log</a>
+                        </div>
+                    </div>
+                `;
+                galleryContainer.innerHTML += cardHTML;
+            });
+        }
+        function filterRoses(category) { const buttons = document.querySelectorAll('.filter-btn'); buttons.forEach(btn => btn.classList.remove('active')); buttons.forEach(btn => { if(btn.innerText.includes(category) || (category === 'all' && btn.innerText.includes('All'))) { btn.classList.add('active'); } }); renderGallery(category); }
+        renderGallery('all');
+    </script>
+</body>
+</html>

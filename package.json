@@ -1,0 +1,9 @@
+{
+  "name": "campus-rose-competition",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npx http-server -p 8080",
+    "start:py": "python3 -m http.server 8080"
+  }
+}
